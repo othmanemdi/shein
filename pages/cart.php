@@ -1,0 +1,1 @@
+<h1>Cart page</h1>
