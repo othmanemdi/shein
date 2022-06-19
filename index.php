@@ -10,7 +10,7 @@
     <?php require_once "pages/body/nav.php" ?>
 
     <div class="container mt-5">
-        <h1>Hello, world!</h1>
+        <h1>Hello, world! Master page</h1>
     </div>
 
     <?php require_once "pages/body/footer.php" ?>
