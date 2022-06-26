@@ -1,0 +1,1 @@
+<h1>Stock page</h1>
