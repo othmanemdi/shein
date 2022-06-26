@@ -30,6 +30,8 @@ $pages = scandir('pages/');
 // die();
 
 
+require_once "database/db.php";
+require_once "helpers/functions.php";
 
 if (in_array($page_file, $pages)) {
     require_once 'pages/' . $page_file;
@@ -43,9 +45,7 @@ if (in_array($page_file, $pages)) {
 // print_r($page_file);
 // echo "</pre>";
 
-require_once "database/db.php";
 
-require_once "helpers/functions.php";
 echo $content_php ?? ""
 
 ?>
