@@ -4,9 +4,16 @@ ob_start();
 
 $title = "Marques page";
 
+
 $marques = $pdo->query("SELECT * FROM marques")->fetchAll();
 
-// dd($marques);
+// echo '<pre>';
+// print_r($marques);
+// echo '</pre>';
+// die();
+
+
+
 $content_php = ob_get_clean();
 
 ob_start(); ?>
@@ -21,42 +28,25 @@ ob_start(); ?>
 <h1>Marques</h1>
 
 
-<div class="card shadow">
-    <div class="card-body">
 
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nom</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($marques as $key => $m) : ?>
-                    <tr>
-                        <th>
-                            <?= $m->id ?>
-                        </th>
-                        <td>
-                            <?= strtoupper($m->nom) ?>
-                        </td>
-                        <td>
-                            <a href="" class="btn btn-dark btn-sm">Modifier</a>
-                            <a href="" class="btn btn-danger btn-sm">Supprimer
-
-                            </a>
-                        </td>
-
-                    </tr>
-                <?php endforeach  ?>
-
-            </tbody>
-        </table>
-    </div>
-</div>
-
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Actiond</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($marques as $key => $value): ?>
+        <tr>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+        </tr>
+        <?php endforeach ?>
+    </tbody>
+</table>
 
 
 <?php $content_html = ob_get_clean();

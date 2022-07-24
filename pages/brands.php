@@ -1,0 +1,64 @@
+<?php
+
+ob_start();
+
+$title = "Marques page";
+$marques = $pdo->query("SELECT * FROM marques ORDER BY id DESC")->fetchAll();
+
+$content_php = ob_get_clean();
+
+ob_start(); ?>
+<style>
+
+</style>
+
+<?php $content_css = ob_get_clean();
+
+ob_start(); ?>
+
+<h1>Marques</h1>
+
+<a href="" class="btn btn-primary">
+    Ajouter
+</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Actiond</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($marques as $key => $m) : ?>
+            <tr>
+                <td>
+                    <?= $m->id ?>
+                </td>
+                <td>
+                    <?= $m->nom ?>
+                </td>
+                <td>
+                    <a href="" class="btn btn-sm btn-dark">
+                        Modifier
+                    </a>
+
+                    <a href="" class="btn btn-sm btn-danger">
+                        Supprimer
+                    </a>
+                </td>
+            </tr>
+        <?php endforeach ?>
+    </tbody>
+</table>
+
+
+<?php $content_html = ob_get_clean();
+
+ob_start(); ?>
+
+<script>
+    // alert(123)
+</script>
+
+<?php $content_js = ob_get_clean(); ?>
