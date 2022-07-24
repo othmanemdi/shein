@@ -18,7 +18,6 @@ ob_start(); ?>
 <h1>404</h1>
 
 
-
 <?php $content_html = ob_get_clean();
 
 ob_start(); ?>

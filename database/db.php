@@ -1,7 +1,6 @@
 <?php
 // https://www.php.net/manual/fr/book.pdo.php
 
-
 try {
 
     $pdo = new PDO('mysql:dbname=shein;host=127.0.0.1', 'root', '', [

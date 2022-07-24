@@ -4,15 +4,8 @@ ob_start();
 
 $title = "Marques page";
 
-
-$marques = $pdo->query("SELECT * FROM marques")->fetchAll();
-
-// echo '<pre>';
-// print_r($marques);
-// echo '</pre>';
-// die();
-
-
+$marques = $pdo->query("SELECT * FROM marques ORDER BY id DESC")->fetchAll();
+// dd($marques);
 
 $content_php = ob_get_clean();
 
@@ -27,27 +20,38 @@ ob_start(); ?>
 
 <h1>Marques</h1>
 
+<a href="marque_add" class="btn btn-primary mb-2">Ajouter</a>
 
-
-<table class="table">
+<table class="table table-sm table-bordered table-hover">
     <thead>
-        <tr>
+        <tr class="table-dark">
             <th>Id</th>
             <th>Nom</th>
-            <th>Actiond</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($marques as $key => $value): ?>
-        <tr>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
+
+        <?php foreach ($marques as $key => $m) : ?>
+            <tr>
+                <td><?= $m->id ?></td>
+                <td><?= $m->nom ?></td>
+
+                <td>
+                    <a href="" class="btn btn-sm btn-dark">
+                        Modifier
+                    </a>
+
+                    <a href="" class="btn btn-sm btn-danger">
+                        Supprimer
+                    </a>
+                </td>
+            </tr>
         <?php endforeach ?>
+
+
     </tbody>
 </table>
-
 
 <?php $content_html = ob_get_clean();
 
