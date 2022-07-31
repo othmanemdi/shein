@@ -28,9 +28,9 @@ $pages = scandir('pages/');
 // print_r($personnes);
 // echo '</pre>';
 // die();
-
-
 require_once "database/db.php";
+// print_r($pdo);
+// die();
 require_once "helpers/functions.php";
 
 if (in_array($page_file, $pages)) {

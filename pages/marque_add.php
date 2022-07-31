@@ -4,9 +4,35 @@ ob_start();
 
 $title = "Ajouter une nouvelle marque";
 
+// dd($_POST);
+
 if (isset($_POST['marque_add_btn'])) {
-    // $nom = ucfirst(strtolower($_POST['nom_input']));
-    $nom = $_POST['nom_input'];
+
+    $nom = strtolower($_POST['nom_input']);
+
+    $pdo->query("INSERT INTO `marques` (`id`, `nom`) VALUES (NULL, '$nom')");
+
+    header('Location: marques');
+    exit();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if (isset($_POST['marque_add_btna'])) {
+    $nom = ucfirst(strtolower($_POST['nom_input']));
     $pdo->query("INSERT INTO marques (id, nom) VALUES (NULL, '$nom')");
 
     header('Location: marques');

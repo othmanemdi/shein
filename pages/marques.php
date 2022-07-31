@@ -35,10 +35,14 @@ ob_start(); ?>
         <?php foreach ($marques as $key => $m) : ?>
             <tr>
                 <td><?= $m->id ?></td>
-                <td><?= $m->nom ?></td>
+                <td><?= ucfirst($m->nom) ?></td>
 
                 <td>
-                    <a href="" class="btn btn-sm btn-dark">
+                    <a href="marque_info&id=<?= $m->id ?>" class="btn btn-sm btn-primary">
+                        Afficher
+                    </a>
+
+                    <a href="marque_update&id=<?= $m->id ?>" class="btn btn-sm btn-dark">
                         Modifier
                     </a>
 
