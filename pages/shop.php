@@ -3,6 +3,7 @@
 ob_start();
 
 $title = "Shop page";
+$couleurs = $pdo->query("SELECT * FROM couleurs ORDER BY id DESC")->fetchAll();
 
 $content_php = ob_get_clean();
 
@@ -68,40 +69,16 @@ ob_start(); ?>
 
         <h4 class="mt-3">Couleurs</h4>
         <ul class="list-group list-group-flush">
-            <label class="list-group-item ">
-                <input class="form-check-input" type="checkbox">
-                <span class="ms-1">
-                    Rouge
-                </span>
-            </label>
+            <?php foreach ($couleurs as $key => $m) : ?>
 
-            <label class="list-group-item ">
-                <input class="form-check-input" type="checkbox">
-                <span class="ms-1">
-                    Noir
-                </span>
-            </label>
+                <label class="list-group-item ">
+                    <input class="form-check-input" type="checkbox">
+                    <span class="ms-1">
+                        <?= ucfirst($m->nom) ?>
+                    </span>
+                </label>
+            <?php endforeach ?>
 
-            <label class="list-group-item ">
-                <input class="form-check-input" type="checkbox">
-                <span class="ms-1">
-                    Blanc
-                </span>
-            </label>
-
-            <label class="list-group-item ">
-                <input class="form-check-input" type="checkbox">
-                <span class="ms-1">
-                    Jaune
-                </span>
-            </label>
-
-            <label class="list-group-item ">
-                <input class="form-check-input" type="checkbox">
-                <span class="ms-1">
-                    Bleu
-                </span>
-            </label>
         </ul>
 
 

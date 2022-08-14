@@ -10,7 +10,6 @@ if (isset($_GET['page']) && preg_match("/^[a-zA-Z0-9_-]*$/", $_GET['page'])) {
 }
 
 $page_file = $page . ".php";
-
 $pages = scandir('pages/');
 
 // $personnes = [];

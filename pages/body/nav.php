@@ -7,34 +7,36 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="home">Home</a>
+                    <a class="nav-link <?= $page == 'home' ? 'fw-bold text-primary' : '' ?>" href="home">Home</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="shop">Shop</a>
-                </li>
-
-
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="cart">Cart</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="contact">Contact</a>
+                    <a class="nav-link <?= $page == 'shop' ? 'fw-bold text-primary' : '' ?>" href="shop">Shop</a>
                 </li>
 
 
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="marques">Marques</a>
+                    <a class="nav-link <?= $page == 'cart' ? 'fw-bold text-primary' : '' ?>" href="cart">Cart</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link <?= $page == 'contact' ? 'fw-bold text-primary' : '' ?> " href="contact">Contact</a>
                 </li>
 
 
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="couleurs">Couleurs</a>
+                    <a class="nav-link <?= $page == 'marques' ? 'fw-bold text-primary' : '' ?>  " href="marques">Marques</a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link <?= $page == 'couleurs' ? 'fw-bold text-primary' : '' ?>  " href="couleurs">Couleurs</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="categories">Catégories</a>
+                    <a class="nav-link 
+                    <?= $page == 'categories' ? 'fw-bold text-primary' : '' ?>
+                    " href="categories">Catégories</a>
                 </li>
 
             </ul>
