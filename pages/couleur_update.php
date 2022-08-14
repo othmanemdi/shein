@@ -5,30 +5,30 @@ ob_start();
 
 $title = "Modifier page";
 
-$marque_id = (int)$_GET['id'];
+$couleur_id = (int)$_GET['id'];
 
-if ($marque_id == 0) {
+if ($couleur_id == 0) {
     $_SESSION['flash']['danger'] = "Id introuvable";
-    header('Location: marques');
+    header('Location: couleurs');
     exit();
 }
 
-if (isset($_POST['marque_update_btn'])) {
+if (isset($_POST['couleur_update_btn'])) {
 
     $nom = ucfirst(strtolower($_POST['nom_input']));
-    $pdo->query("UPDATE marques SET nom = '$nom' WHERE id = $marque_id");
+    $pdo->query("UPDATE couleurs SET nom = '$nom' WHERE id = $couleur_id");
 
     $_SESSION['flash']['success'] = 'Bien enregister';
-    header('Location: marques');
+    header('Location: couleurs');
     die();
 }
 
-// UPDATE marques SET nom = 'Sourie' WHERE id = 20;
-$marque = $pdo->query("SELECT * FROM marques WHERE id = $marque_id LIMIT 1")->fetch();
+// UPDATE couleurs SET nom = 'Sourie' WHERE id = 20;
+$couleur = $pdo->query("SELECT * FROM couleurs WHERE id = $couleur_id LIMIT 1")->fetch();
 
-// Check if $marque false
-if (!$marque) {
-    header('Location: marques');
+// Check if $couleur false
+if (!$couleur) {
+    header('Location: couleurs');
     exit();
 }
 
@@ -43,7 +43,7 @@ ob_start(); ?>
 
 ob_start(); ?>
 
-<h1>Modifier la marque</h1>
+<h1>Modifier la couleur</h1>
 <h2>
     <?php
     echo $_SESSION['message'];
@@ -57,10 +57,10 @@ ob_start(); ?>
 
             <div class="mb-3">
                 <label for="nom" class="form-label">Nom:</label>
-                <input name="nom_input" type="text" class="form-control" id="nom" value="<?= $marque->nom ?>" placeholder="Nom:">
+                <input name="nom_input" type="text" class="form-control" id="nom" value="<?= $couleur->nom ?>" placeholder="Nom:">
             </div>
 
-            <button name="marque_update_btn" type="submit" class="btn btn-primary">
+            <button name="couleur_update_btn" type="submit" class="btn btn-primary">
                 Modifier
             </button>
 

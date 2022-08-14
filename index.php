@@ -1,4 +1,7 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 if (isset($_GET['page']) && preg_match("/^[a-zA-Z0-9_-]*$/", $_GET['page'])) {
     $page = htmlspecialchars(trim($_GET['page']));
@@ -63,6 +66,16 @@ echo $content_php ?? ""
     <?php require_once "pages/body/nav.php" ?>
 
     <div class="container mt-5">
+
+        <?php if (isset($_SESSION['flash'])) : ?>
+            <?php foreach ($_SESSION['flash'] as $color => $message) : ?>
+                <div class="alert alert-<?= $color ?> mt-3">
+                    <?= $message; ?>
+                </div>
+            <?php endforeach; ?>
+            <?php unset($_SESSION['flash']); ?>
+        <?php endif; ?>
+
         <?= $content_html ?? ""  ?>
     </div>
 

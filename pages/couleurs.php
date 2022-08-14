@@ -3,10 +3,10 @@
 ob_start();
 
 
-$title = "Marques page";
+$title = "Couleurs page";
 
-$marques = $pdo->query("SELECT * FROM marques ORDER BY id DESC")->fetchAll();
-// dd($marques);
+$couleurs = $pdo->query("SELECT * FROM couleurs ORDER BY id DESC")->fetchAll();
+// dd($couleurs);
 
 $content_php = ob_get_clean();
 
@@ -19,9 +19,9 @@ ob_start(); ?>
 
 ob_start(); ?>
 
-<h1>Marques</h1>
+<h1>Couleurs</h1>
 
-<a href="marque_add" class="btn btn-primary mb-2">Ajouter</a>
+<a href="couleur_add" class="btn btn-primary mb-2">Ajouter</a>
 
 <table class="table table-sm table-bordered table-hover">
     <thead>
@@ -33,21 +33,21 @@ ob_start(); ?>
     </thead>
     <tbody>
 
-        <?php foreach ($marques as $key => $m) : ?>
+        <?php foreach ($couleurs as $key => $m) : ?>
             <tr>
                 <td><?= $m->id ?></td>
                 <td><?= ucfirst($m->nom) ?></td>
 
                 <td>
-                    <a href="marque_info&id=<?= $m->id ?>" class="btn btn-sm btn-primary">
+                    <a href="couleur_info&id=<?= $m->id ?>" class="btn btn-sm btn-primary">
                         Afficher
                     </a>
 
-                    <a href="marque_update&id=<?= $m->id ?>" class="btn btn-sm btn-dark">
+                    <a href="couleur_update&id=<?= $m->id ?>" class="btn btn-sm btn-dark">
                         Modifier
                     </a>
 
-                    <a href="marque_delete&id=<?= $m->id ?>" class="btn btn-sm btn-danger">
+                    <a href="couleur_delete&id=<?= $m->id ?>" class="btn btn-sm btn-danger">
                         Supprimer
                     </a>
                 </td>

@@ -2,7 +2,8 @@
 
 ob_start();
 
-$title = "Marque info page";
+$title = "Delete page";
+
 
 $marque_id = (int)$_GET['id'];
 
@@ -12,16 +13,25 @@ if ($marque_id == 0) {
     exit();
 }
 
+
+if (isset($_POST['marque_delete_btn'])) {
+
+    $pdo->query("DELETE FROM marques WHERE id = $marque_id");
+
+    $_SESSION['flash']['success'] = "Bien supprimer";
+    header('Location: marques');
+    die();
+}
+
+
+
 $marque = $pdo->query("SELECT * FROM marques WHERE id = $marque_id LIMIT 1")->fetch();
 
 // Check if $marque false
 if (!$marque) {
-    $_SESSION['flash']['danger'] = "Marque introuvable";
     header('Location: marques');
     exit();
 }
-
-
 
 $content_php = ob_get_clean();
 
@@ -34,7 +44,8 @@ ob_start(); ?>
 
 ob_start(); ?>
 
-<h1>Marque info</h1>
+<h1>Delete <?= $marque->nom ?></h1>
+
 
 <div class="card">
     <div class="card-body">
@@ -44,6 +55,26 @@ ob_start(); ?>
         </ul>
     </div>
 </div>
+
+<h3 class="text-danger">
+    Voulez vous vraiment supprimer <?= strtolower($marque->nom) ?> ?
+</h3>
+
+<form method="post">
+
+    <button name="marque_delete_btn" type="submit" class="btn btn-danger">Supprimer</button>
+
+</form>
+
+
+<a href="marques" class="btn btn-dark">Retour</a>
+
+
+
+
+
+
+
 
 <?php $content_html = ob_get_clean();
 

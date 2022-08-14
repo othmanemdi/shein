@@ -2,7 +2,6 @@
 
 ob_start();
 
-
 $title = "Marques page";
 
 $marques = $pdo->query("SELECT * FROM marques ORDER BY id DESC")->fetchAll();
@@ -47,7 +46,7 @@ ob_start(); ?>
                         Modifier
                     </a>
 
-                    <a href="marque_delete&id=<?= $m->id ?>" class="btn btn-sm btn-danger">
+                    <a href="" class="btn btn-sm btn-danger">
                         Supprimer
                     </a>
                 </td>
