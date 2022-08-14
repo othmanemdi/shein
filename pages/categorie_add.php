@@ -2,22 +2,36 @@
 
 ob_start();
 
-$title = "Ajouter une nouvelle marque";
+$title = "Ajouter une nouvelle catégorie";
 
 // dd($_POST);
 
+if (isset($_POST['categorie_add_btn'])) {
 
-if (isset($_POST['marque_add_btna'])) {
     $nom = ucfirst(strtolower($_POST['nom_input']));
-    $pdo->query("INSERT INTO marques (id, nom) VALUES (NULL, '$nom')");
+
+    $pdo->query("INSERT INTO `categories` (`id`, `nom`) VALUES (NULL, '$nom')");
     $_SESSION['flash']['success'] = "Bien ajouter";
 
-
-    header('Location: marques');
-    die();
-
-    // dd($nom);
+    header('Location: categories');
+    exit();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 $content_php = ob_get_clean();
@@ -31,7 +45,7 @@ ob_start(); ?>
 
 ob_start(); ?>
 
-<h1>Ajouter une nouvelle marque</h1>
+<h1>Ajouter une nouvelle categorie</h1>
 
 <div class="card">
     <div class="card-body">
@@ -43,7 +57,7 @@ ob_start(); ?>
                 <input name="nom_input" type="text" class="form-control" id="nom" placeholder="Nom:">
             </div>
 
-            <button name="marque_add_btn" type="submit" class="btn btn-success">Ajouter</button>
+            <button name="categorie_add_btn" type="submit" class="btn btn-success">Ajouter</button>
 
         </form>
 

@@ -8,9 +8,11 @@ $title = "Ajouter une nouvelle couleur";
 
 if (isset($_POST['couleur_add_btn'])) {
 
-    $nom = strtolower($_POST['nom_input']);
+    $nom = ucfirst(strtolower($_POST['nom_input']));
 
     $pdo->query("INSERT INTO `couleurs` (`id`, `nom`) VALUES (NULL, '$nom')");
+
+    $_SESSION['flash']['success'] = "Bien ajouter";
 
     header('Location: couleurs');
     exit();
@@ -31,7 +33,7 @@ if (isset($_POST['couleur_add_btn'])) {
 
 
 
-if (isset($_POST['couleur_add_btna'])) {
+if (isset($_POST['couleur_add_btn'])) {
     $nom = ucfirst(strtolower($_POST['nom_input']));
     $pdo->query("INSERT INTO couleurs (id, nom) VALUES (NULL, '$nom')");
 
