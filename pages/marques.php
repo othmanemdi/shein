@@ -14,6 +14,17 @@ if (isset($_POST['marque_add_btn'])) {
     exit();
 }
 
+if (isset($_POST['marque_update_btn'])) {
+
+    $marque_id = (int) $_POST['id_input'];
+    $nom = ucfirst(strtolower($_POST['nom_input']));
+    $pdo->query("UPDATE marques SET nom = '$nom' WHERE id = $marque_id");
+
+    $_SESSION['flash']['success'] = 'Bien enregister';
+    header('Location: marques');
+    die();
+}
+
 $marques = $pdo->query("SELECT * FROM marques ORDER BY id DESC")->fetchAll();
 
 $content_php = ob_get_clean();
@@ -116,10 +127,50 @@ ob_start(); ?>
                         </div>
                     </div>
 
-
-                    <a href="marque_update&id=<?= $m->id ?>" class="btn btn-sm btn-dark">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#brand_update_<?= $m->id ?>">
                         Modifier
-                    </a>
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="brand_update_<?= $m->id ?>" tabindex="-1" aria-labelledby="brand_update_<?= $m->id ?>Label" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form method="post">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="brand_update_<?= $m->id ?>Label">
+                                            Modifier la marque
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+
+
+
+                                        <input name="id_input" type="hidden" value="<?= $m->id ?>">
+
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Nom:</label>
+
+                                            <input name="nom_input" type="text" class="form-control" value="<?= $m->nom ?>" placeholder="Nom:">
+                                        </div>
+
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                        <button name="marque_update_btn" type="submit" class="btn btn-primary">
+                                            Modifier
+                                        </button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
 
                     <a href="marque_delete&id=<?= $m->id ?>" class="btn btn-sm btn-danger">
                         Supprimer

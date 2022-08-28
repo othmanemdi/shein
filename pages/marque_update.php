@@ -44,11 +44,7 @@ ob_start(); ?>
 ob_start(); ?>
 
 <h1>Modifier la marque</h1>
-<h2>
-    <?php
-    echo $_SESSION['message'];
-    ?>
-</h2>
+
 
 <div class="card">
     <div class="card-body">
