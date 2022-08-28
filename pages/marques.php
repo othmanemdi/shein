@@ -25,7 +25,20 @@ if (isset($_POST['marque_update_btn'])) {
     die();
 }
 
-$marques = $pdo->query("SELECT * FROM marques ORDER BY id DESC")->fetchAll();
+
+if (isset($_POST['marque_delete_btn'])) {
+    $marque_id = (int) $_POST['id_input'];
+
+    // $pdo->query("UPDATE marques SET is_active = 0 WHERE id = $marque_id");
+    $pdo->query("UPDATE marques SET deleted_at = NOW() WHERE id = $marque_id");
+    // $pdo->query("DELETE FROM marques WHERE id = $marque_id");
+
+    $_SESSION['flash']['success'] = "Bien supprimer";
+    header('Location: marques');
+    die();
+}
+
+$marques = $pdo->query("SELECT * FROM marques WHERE deleted_at IS NULL ORDER BY id DESC")->fetchAll();
 
 $content_php = ob_get_clean();
 
@@ -127,12 +140,10 @@ ob_start(); ?>
                         </div>
                     </div>
 
-                    <!-- Button trigger modal -->
                     <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#brand_update_<?= $m->id ?>">
                         Modifier
                     </button>
 
-                    <!-- Modal -->
                     <div class="modal fade" id="brand_update_<?= $m->id ?>" tabindex="-1" aria-labelledby="brand_update_<?= $m->id ?>Label" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -172,9 +183,47 @@ ob_start(); ?>
                         </div>
                     </div>
 
-                    <a href="marque_delete&id=<?= $m->id ?>" class="btn btn-sm btn-danger">
+
+
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#brand_delete_<?= $m->id ?>">
                         Supprimer
-                    </a>
+                    </button>
+
+                    <div class="modal fade" id="brand_delete_<?= $m->id ?>" tabindex="-1" aria-labelledby="brand_delete_<?= $m->id ?>Label" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form method="post">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="brand_delete_<?= $m->id ?>Label">
+                                            Supprimer la marque
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <h5 class="text-danger">Voulez vous vraiment supprimer <?= $m->nom ?> ?</h5>
+
+
+
+                                        <input name="id_input" type="hidden" value="<?= $m->id ?>">
+
+
+
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                        <button name="marque_delete_btn" type="submit" class="btn btn-danger">
+                                            Supprimer
+                                        </button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                 </td>
             </tr>
         <?php endforeach ?>
