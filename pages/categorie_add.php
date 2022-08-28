@@ -54,7 +54,7 @@ ob_start(); ?>
 
             <div class="mb-3">
                 <label for="nom" class="form-label">Nom:</label>
-                <input name="nom_input" type="text" class="form-control" id="nom" placeholder="Nom:">
+                <input name="nom_input" type="text" class="form-control" id="nom" placeholder="Nom:" autofocus>
             </div>
 
             <button name="categorie_add_btn" type="submit" class="btn btn-success">Ajouter</button>

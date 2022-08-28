@@ -7,7 +7,7 @@ $title = "Ajouter une nouvelle marque";
 // dd($_POST);
 
 
-if (isset($_POST['marque_add_btna'])) {
+if (isset($_POST['marque_add_btn'])) {
     $nom = ucfirst(strtolower($_POST['nom_input']));
     $pdo->query("INSERT INTO marques (id, nom) VALUES (NULL, '$nom')");
     $_SESSION['flash']['success'] = "Bien ajouter";

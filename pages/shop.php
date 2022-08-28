@@ -3,6 +3,8 @@
 ob_start();
 
 $title = "Shop page";
+$marques = $pdo->query("SELECT * FROM marques ORDER BY id DESC")->fetchAll();
+$categories = $pdo->query("SELECT * FROM categories ORDER BY id DESC")->fetchAll();
 $couleurs = $pdo->query("SELECT * FROM couleurs ORDER BY id DESC")->fetchAll();
 
 $content_php = ob_get_clean();
@@ -36,45 +38,39 @@ ob_start(); ?>
     <div class="col-md-3">
         <h4>Marques</h4>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">Adidas <small>(50)</small></li>
-            <li class="list-group-item">Nike</li>
-            <li class="list-group-item">Chanel</li>
-            <li class="list-group-item">Lacost</li>
-            <li class="list-group-item">Luis Vuiton</li>
+            <?php foreach ($marques as $marque) : ?>
+                <label class="list-group-item">
+                    <input class="form-check-input" type="checkbox">
+                    <span class="ms-1">
+                        <?= ucwords(strtolower($marque->nom)) ?>
+                    </span>
+                </label>
+            <?php endforeach ?>
+
         </ul>
 
         <h4 class="mt-3">Catégories</h4>
 
 
         <div class="list-group list-group-flush mx-0">
-            <label class="list-group-item">
-                <input class="form-check-input" type="checkbox" checked="">
-                <span class="ms-1">
-                    Shirt
-                </span>
-            </label>
-            <label class="list-group-item">
-                <input class="form-check-input" type="checkbox">
-                <span class="ms-1">
-                    Dress
-                </span>
-            </label>
-            <label class="list-group-item ">
-                <input class="form-check-input" type="checkbox">
-                <span class="ms-1">
-                    Jacket
-                </span>
-            </label>
+            <?php foreach ($categories as $categorie) : ?>
+                <label class="list-group-item">
+                    <input class="form-check-input" type="checkbox">
+                    <span class="ms-1">
+                        <?= ucwords(strtolower($categorie->nom)) ?>
+                    </span>
+                </label>
+            <?php endforeach ?>
         </div>
 
         <h4 class="mt-3">Couleurs</h4>
         <ul class="list-group list-group-flush">
-            <?php foreach ($couleurs as $key => $m) : ?>
+            <?php foreach ($couleurs as $key => $couleur) : ?>
 
                 <label class="list-group-item ">
                     <input class="form-check-input" type="checkbox">
                     <span class="ms-1">
-                        <?= ucfirst($m->nom) ?>
+                        <?= ucwords(strtolower($couleur->nom)) ?>
                     </span>
                 </label>
             <?php endforeach ?>
