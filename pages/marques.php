@@ -18,7 +18,7 @@ if (isset($_POST['marque_update_btn'])) {
 
     $marque_id = (int) $_POST['id_input'];
     $nom = ucfirst(strtolower($_POST['nom_input']));
-    $pdo->query("UPDATE marques SET nom = '$nom' WHERE id = $marque_id");
+    $pdo->query("UPDATE marques SET nom = '$nom', updated_at = NOW() WHERE id = $marque_id");
 
     $_SESSION['flash']['success'] = 'Bien enregister';
     header('Location: marques');
@@ -39,6 +39,7 @@ if (isset($_POST['marque_delete_btn'])) {
 }
 
 $marques = $pdo->query("SELECT * FROM marques WHERE deleted_at IS NULL ORDER BY id DESC")->fetchAll();
+// $marques = $pdo->query("SELECT * FROM marques WHERE is_active = 1 ORDER BY id DESC")->fetchAll();
 
 $content_php = ob_get_clean();
 

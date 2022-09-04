@@ -35,8 +35,11 @@
 
                 <li class="nav-item">
                     <a class="nav-link 
-                    <?= $page == 'categories' ? 'fw-bold text-primary' : '' ?>
-                    " href="categories">Catégories</a>
+                    <?= $page == 'categories' ? 'fw-bold text-primary' : '' ?>" href="categories">Catégories</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link <?= $page == 'produits' ? 'fw-bold text-primary' : '' ?>  " href="produits">Produits</a>
                 </li>
 
             </ul>

@@ -24,7 +24,6 @@ ob_start(); ?>
 <div class="card shadow">
     <div class="card-body">
 
-
         <table class="table">
             <thead>
                 <tr>
