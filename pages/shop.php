@@ -7,6 +7,26 @@ $marques = $pdo->query("SELECT * FROM marques ORDER BY id DESC")->fetchAll();
 $categories = $pdo->query("SELECT * FROM categories ORDER BY id DESC")->fetchAll();
 $couleurs = $pdo->query("SELECT * FROM couleurs ORDER BY id DESC")->fetchAll();
 
+
+$produits = $pdo->query("SELECT 
+p.id AS produit_id,
+p.image,
+p.reference,
+p.nom AS produit_nom,
+p.prix,
+p.ancien_prix,
+p.description,
+m.nom AS marque_nom,
+cg.nom AS categorie_nom,
+c.nom AS couleur_nom
+FROM 
+produits p
+LEFT JOIN marques m ON m.id = p.marque_id
+LEFT JOIN categories cg ON cg.id = p.categorie_id
+LEFT JOIN couleurs c ON c.id = p.couleur_id
+
+WHERE p.deleted_at IS NULL ORDER BY p.id DESC")->fetchAll();
+
 $content_php = ob_get_clean();
 
 ob_start(); ?>
@@ -86,145 +106,38 @@ ob_start(); ?>
 
         <!-- row 2 -->
         <div class="row">
-            <div class="col-md-4">
-                <div class="card mb-3">
+            <?php foreach ($produits as $key => $p) : ?>
 
+                <div class="col-md-4">
+                    <div class="card mb-3">
 
-
-
-                    <a href="products_details">
-
-                        <img src="images/products/product_img1.jpg" class="card-img-top" alt="...">
-                    </a>
-
-
-
-                    <div class="card-body">
-                        <h5 class="card-title">Product 1</h5>
-                        <p class="card-text">
-                            <span class="fw-bold">$45.00</span>
-                            <del class="text-danger">$75.00</del>
-                        </p>
-
-
-                        <a href="cart" class="btn bg-magenta text-white">
-
-                            <i class="fa-solid fa-cart-shopping"></i>
-                            Add to cart
+                        <a href="products_details">
+                            <img src="images/produits/<?= $p->image ?>" class="card-img-top" alt="...">
                         </a>
 
 
 
+                        <div class="card-body">
+                            <h5 class="card-title"><?= $p->produit_nom ?></h5>
+                            <p class="card-text">
+                                <span class="fw-bold"><?= $p->prix ?> DH</span>
+                                <del class="text-danger"><?= $p->ancien_prix ?> DH</del>
+                            </p>
 
+                            <a href="cart" class="btn bg-magenta text-white">
+
+                                <i class="fa-solid fa-cart-shopping"></i>
+                                Add to cart
+                            </a>
+
+                        </div>
                     </div>
+                    <!-- card -->
                 </div>
-                <!-- card -->
-            </div>
-            <!-- col -->
+                <!-- col -->
 
-            <div class="col-md-4">
-                <div class="card mb-3">
-                    <a href="products_details">
-                        <img src="images/products/product_img2.jpg" class="card-img-top" alt="...">
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title">Product 1</h5>
-                        <p class="card-text">
-                            <span class="fw-bold">$45.00</span>
-                            <del class="text-danger">$75.00</del>
-                        </p>
-                        <a href="cart" class="btn bg-magenta text-white">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                            Add to cart</a>
-                    </div>
-                </div>
-                <!-- card -->
-            </div>
-            <!-- col -->
+            <?php endforeach ?>
 
-            <div class="col-md-4">
-                <div class="card mb-3">
-                    <a href="products_details">
-
-                        <img src="images/products/product_img3.jpg" class="card-img-top" alt="...">
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title">Product 1</h5>
-                        <p class="card-text">
-                            <span class="fw-bold">$45.00</span>
-                            <del class="text-danger">$75.00</del>
-                        </p>
-                        <a href="cart" class="btn bg-magenta text-white">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                            Add to cart</a>
-                    </div>
-                </div>
-                <!-- card -->
-            </div>
-            <!-- col -->
-
-            <div class="col-md-4">
-                <div class="card mb-3">
-                    <a href="products_details">
-
-                        <img src="images/products/product_img4.jpg" class="card-img-top" alt="...">
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title">Product 1</h5>
-                        <p class="card-text">
-                            <span class="fw-bold">$45.00</span>
-                            <del class="text-danger">$75.00</del>
-                        </p>
-                        <a href="cart" class="btn bg-magenta text-white">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                            Add to cart</a>
-                    </div>
-                </div>
-                <!-- card -->
-            </div>
-            <!-- col -->
-
-            <div class="col-md-4">
-                <div class="card mb-3">
-                    <a href="products_details">
-
-                        <img src="images/products/product_img5.jpg" class="card-img-top" alt="...">
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title">Product 1</h5>
-                        <p class="card-text">
-                            <span class="fw-bold">$45.00</span>
-                            <del class="text-danger">$75.00</del>
-                        </p>
-                        <a href="cart" class="btn bg-magenta text-white">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                            Add to cart</a>
-                    </div>
-                </div>
-                <!-- card -->
-            </div>
-            <!-- col -->
-
-            <div class="col-md-4">
-                <div class="card mb-3">
-                    <a href="products_details">
-
-                        <img src="images/products/product_img6.jpg" class="card-img-top" alt="...">
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title">Product 1</h5>
-                        <p class="card-text">
-                            <span class="fw-bold">$45.00</span>
-                            <del class="text-danger">$75.00</del>
-                        </p>
-                        <a href="cart" class="btn bg-magenta text-white">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                            Add to cart</a>
-                    </div>
-                </div>
-                <!-- card -->
-            </div>
-            <!-- col -->
         </div>
         <!-- fin row 2 -->
     </div>

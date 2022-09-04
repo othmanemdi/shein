@@ -5,9 +5,67 @@ ob_start();
 $title = "Produits page";
 
 if (isset($_POST['produit_add_btn'])) {
+    // dd($_FILES);
 
+    $target_dir = "images/produits/";
+
+    // $target_file = $target_dir . basename($_FILES["image_product"]["name"]);
+    $image_name =  basename($_FILES["image_product"]["name"]);
+    $target_file = $target_dir . $image_name;
+    $uploadOk = 1;
+
+    // var_dump();
+    $extention_image = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+    // dd();
+    // $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $extentions = ["jpeg", "jpg", "JPEG", "JPG"];
+    if (!in_array($extention_image, $extentions)) {
+        $_SESSION['flash']['danger'] = "Cette extention n'est pas valide (.$extention_image) Seule les images (JPG) sont autorisez";
+        header('Location: produits');
+        die();
+    }
+
+    if (move_uploaded_file($_FILES["image_product"]["tmp_name"], $target_file)) {
+    }
+
+    $reference = ucfirst(strtolower($_POST['reference_input']));
     $nom = ucfirst(strtolower($_POST['nom_input']));
-    $pdo->query("INSERT INTO produits (id, nom) VALUES (NULL, '$nom')");
+    $marque_id = (int)$_POST['marque_id_input'];
+    $categorie_id = (int)$_POST['categorie_id_input'];
+    $couleur_id = (int)$_POST['couleur_id_input'];
+    $prix = $_POST['prix_input'];
+    $ancien_prix = $_POST['ancien_prix_input'];
+    $description = $_POST['description_input'];
+
+    $product = $pdo->prepare("INSERT INTO produits SET 
+        nom = :nom,
+        reference = :reference,
+        prix = :prix,
+        ancien_prix = :ancien_prix,
+        marque_id = :marque_id,
+        categorie_id = :categorie_id,
+        couleur_id = :couleur_id,
+        description = :description,
+        image = :image
+");
+    $product->execute(
+        [
+            'nom' => $nom,
+            'reference' => $reference,
+            'prix' => $prix,
+            'ancien_prix' => $ancien_prix,
+            'marque_id' => $marque_id,
+            'categorie_id' => $categorie_id,
+            'couleur_id' => $couleur_id,
+            'description' => $description,
+            'image' => $image_name
+        ]
+    );
+
+
+
+    // $pdo->query("INSERT INTO produits (id, nom) VALUES (NULL, '$nom')");
     $_SESSION['flash']['success'] = "Bien ajouter";
 
     header('Location: produits');
@@ -57,6 +115,11 @@ LEFT JOIN couleurs c ON c.id = p.couleur_id
 
 WHERE p.deleted_at IS NULL ORDER BY p.id DESC")->fetchAll();
 
+$marques = $pdo->query("SELECT id,nom FROM marques WHERE deleted_at IS NULL ORDER BY id DESC")->fetchAll();
+
+$categories = $pdo->query("SELECT id,nom FROM categories WHERE deleted_at IS NULL ORDER BY id DESC")->fetchAll();
+
+$couleurs = $pdo->query("SELECT id,nom FROM couleurs WHERE deleted_at IS NULL ORDER BY id DESC")->fetchAll();
 
 
 
@@ -80,10 +143,10 @@ ob_start(); ?>
 </button>
 
 <div class="modal fade" id="brand_add" tabindex="-1" aria-labelledby="brand_addLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
 
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
 
                 <div class="modal-header">
                     <h5 class="modal-title" id="brand_addLabel">
@@ -95,12 +158,126 @@ ob_start(); ?>
 
                 <div class="modal-body">
 
-                    <div class="mb-3">
-                        <label for="nom" class="form-label">Nom:</label>
-                        <input name="nom_input" type="text" class="form-control" id="nom" placeholder="Nom:">
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="reference" class="form-label">Référence:</label>
+                                <input name="reference_input" type="text" class="form-control" id="reference" placeholder="Référence:">
+                            </div>
+                            <!-- mb-3 -->
+                        </div>
+                        <!-- col -->
+
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="nom" class="form-label">Nom:</label>
+                                <input name="nom_input" type="text" class="form-control" id="nom" placeholder="Nom:">
+                            </div>
+                            <!-- mb-3 -->
+                        </div>
+                        <!-- col -->
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="marque_id" class="form-label">Marques:</label>
+
+                                <select name="marque_id_input" id="marque_id" class="form-select" aria-label="Default select example">
+                                    <?php foreach ($marques as $key => $m) : ?>
+
+                                        <option value="<?= $m->id ?>"><?= ucfirst($m->nom) ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                            <!-- mb-3 -->
+                        </div>
+                        <!-- col -->
+
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="categorie_id" class="form-label">Catégories:</label>
+
+                                <select name="categorie_id_input" id="categorie_id" class="form-select" aria-label="Default select example">
+                                    <?php foreach ($categories as $key => $m) : ?>
+
+                                        <option value="<?= $m->id ?>"><?= ucfirst($m->nom) ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                            <!-- mb-3 -->
+                        </div>
+                        <!-- col -->
+
+
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="couleur_id" class="form-label">Couleur:</label>
+
+                                <select name="couleur_id_input" id="couleur_id" class="form-select" aria-label="Default select example">
+                                    <?php foreach ($couleurs as $key => $m) : ?>
+
+                                        <option value="<?= $m->id ?>"><?= ucfirst($m->nom) ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                            <!-- mb-3 -->
+                        </div>
+                        <!-- col -->
+
+
+
+
+
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="prix" class="form-label">Prix:</label>
+                                <input name="prix_input" type="number" class="form-control" id="prix" placeholder="Prix:">
+                            </div>
+                            <!-- mb-3 -->
+                        </div>
+                        <!-- col -->
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="ancien_prix" class="form-label">Ancien Prix:</label>
+                                <input name="ancien_prix_input" type="number" class="form-control" id="ancien_prix" placeholder="Ancien Prix:">
+                            </div>
+                            <!-- mb-3 -->
+                        </div>
+                        <!-- col -->
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="image_product" class="form-label">Image:</label>
+                                <input type="file" name="image_product" id="image_product" class="form-control">
+                            </div>
+                            <!-- mb-3 -->
+                        </div>
+                        <!-- col -->
+
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="ancien_prix" class="form-label">Déscription:</label>
+                                <textarea name="description_input" id="description" class="form-control" placeholder="Déscription"></textarea>
+
+                            </div>
+                            <!-- mb-3 -->
+                        </div>
+                        <!-- col -->
+
+
+
+
                     </div>
+                    <!-- row -->
 
                 </div>
+                <!-- modal-body -->
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
@@ -190,6 +367,24 @@ ob_start(); ?>
                                                 <li class="list-group-item">
                                                     <b>Référence:</b> <?= ucfirst($m->reference) ?>
                                                 </li>
+
+
+                                                <li class="list-group-item">
+                                                    <b>Marque:</b> <?= ucfirst($m->marque_nom) ?>
+                                                </li>
+
+
+                                                <li class="list-group-item">
+                                                    <b>Catégorie:</b> <?= ucfirst($m->categorie_nom) ?>
+                                                </li>
+
+                                                <li class="list-group-item">
+                                                    <b>Couleur:</b>
+
+                                                    <i class="fas fa-circle" style="color:<?= $m->couleur_nom ?>"></i>
+                                                    <?= ucfirst($m->couleur_nom) ?>
+                                                </li>
+
 
                                                 <li class="list-group-item">
                                                     <b>Prix:</b>

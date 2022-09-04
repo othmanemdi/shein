@@ -1,1 +1,2 @@
-<h1>Stock page</h1>
+git reset --HARD
+git pull
