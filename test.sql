@@ -1,4 +1,4 @@
-ALTER TABLE `produits`
+ALTER TABLE `carts`
 ADD
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `nom`,
 ADD

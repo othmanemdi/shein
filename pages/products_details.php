@@ -4,6 +4,34 @@ ob_start();
 
 $title = "Product Details page";
 
+if (!isset($_GET['id'])) {
+    $_SESSION['flash']['danger'] = 'Error ID';
+    header('Location: shop');
+    exit();
+}
+
+$produit_id = (int)$_GET['id'];
+
+if ($produit_id === 0) {
+    $_SESSION['flash']['danger'] = 'Id Introuvable';
+    header('Location: shop');
+    exit();
+}
+
+$produit = $pdo->query("SELECT * FROM 
+    produits 
+    WHERE id = $produit_id AND deleted_at IS NULL
+    LIMIT 1
+    ")->fetch();
+
+$couleurs = $pdo->query("SELECT id,nom FROM couleurs WHERE deleted_at IS NULL ORDER BY id DESC")->fetchAll();
+
+
+// dd($produit);
+
+
+
+// die();
 $content_php = ob_get_clean();
 
 ob_start(); ?>
@@ -35,20 +63,18 @@ ob_start(); ?>
 
 <div class="row">
     <div class="col-md-6">
-        <img src="images/products/product_img10.jpg" class="card-img-top" alt="Design">
+        <img src="images/products/<?= $produit->image ?>" class="card-img-top" alt="Design">
     </div>
 
     <div class="col-md-6">
-        <h1>Red Shirt</h1>
+        <h1><?= $produit->nom ?></h1>
         <i class="fas fa-star text-warning"></i>
         <i class="fas fa-star text-warning"></i>
         <i class="fas fa-star text-warning"></i>
         <i class="fas fa-star text-warning"></i>
         <i class="fas fa-star-half-alt text-warning"></i>
         <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos pariatur, praesentium assumenda
-            incidunt labore, nemo expedita necessitatibus voluptate nam libero velit perferendis accusantium
-            eum. Laborum ad quo hic totam maxime.
+            <?= $produit->description ?>
         </p>
 
 
@@ -62,19 +88,26 @@ ob_start(); ?>
                         <select class="form-select">
                             <option>S</option>
                             <option>M</option>
-                            <option>L</option>
+                            <option selected>L</option>
                             <option>XL</option>
                         </select>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Colors:</label>
+                        <label for="couleur_id" class="form-label">Couleur:</label>
 
-                        <select class="form-select">
-                            <option>Red</option>
-                            <option>Blue</option>
-                            <option>White</option>
+                        <select name="couleur_id_input" id="couleur_id" class="form-select" aria-label="Default select example">
+                            <?php foreach ($couleurs as $key => $c) : ?>
+
+                                <option value="<?= $c->id ?>" <?php
+                                                                if ($c->id == $produit->couleur_id) {
+                                                                    echo "selected";
+                                                                }
+                                                                ?>>
+
+                                    <?= ucfirst($c->nom) ?></option>
+                            <?php endforeach ?>
                         </select>
                     </div>
                 </div>
@@ -83,12 +116,19 @@ ob_start(); ?>
 
         </form>
         <h3 class="mb-4 mt-4">
-            <span class="fw-bold">$45.00</span>
-            <del class="text-danger">$75.00</del>
+            <span class="fw-bold">
+                <?= _number_format($produit->prix) ?>
+
+                DH
+            </span>
+            <del class="text-danger">
+                <?= _number_format($produit->ancien_prix) ?>
+                DH
+            </del>
         </h3>
 
         <a href="cart
-        " class="btn btn-lg bg-magenta text-white">
+        " class="btn btn-lg bg-dark text-white">
             <i class="fa-solid fa-cart-shopping"></i>
             Add To Cart
         </a>

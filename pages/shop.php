@@ -3,6 +3,50 @@
 ob_start();
 
 $title = "Shop page";
+
+
+if (isset($_POST['add_to_cart'])) {
+    $ip_server = IP_SERVER;
+    $produit_id = (int)$_POST['produit_id'];
+    $prix = (float)$_POST['prix'];
+
+
+    $cart_info_from_db = $pdo->query("SELECT id FROM carts WHERE ip = '$ip_server' LIMIT 1")->fetch();
+
+    if (!$cart_info_from_db) {
+        $cart = $pdo->prepare("INSERT INTO carts SET ip = :ip");
+        $cart->execute(
+            ['ip' => $ip_server]
+        );
+
+        $cart_id = $pdo->lastInsertId();
+    } else
+        $cart_id = $cart_info_from_db->id;
+
+
+    $cart_produit = $pdo->prepare("INSERT INTO cart_produit 
+            SET
+            cart_id = :cart_id,
+            produit_id = :produit_id,
+            prix = :prix
+     ");
+    $cart_produit->execute(
+        [
+            'cart_id' => $cart_id,
+            'produit_id' => $produit_id,
+            'prix' => $prix
+        ]
+    );
+
+    $_SESSION['flash']['success'] = 'Bien ajouter';
+    header('Location: cart');
+    die();
+}
+
+
+
+
+
 $marques = $pdo->query("SELECT * FROM marques ORDER BY id DESC")->fetchAll();
 $categories = $pdo->query("SELECT * FROM categories ORDER BY id DESC")->fetchAll();
 $couleurs = $pdo->query("SELECT * FROM couleurs ORDER BY id DESC")->fetchAll();
@@ -111,25 +155,26 @@ ob_start(); ?>
                 <div class="col-md-4">
                     <div class="card mb-3">
 
-                        <a href="products_details">
+                        <a href="products_details&id=<?= $p->produit_id ?>">
                             <img src="images/produits/<?= $p->image ?>" class="card-img-top" alt="...">
                         </a>
-
-
 
                         <div class="card-body">
                             <h5 class="card-title"><?= $p->produit_nom ?></h5>
                             <p class="card-text">
-                                <span class="fw-bold"><?= $p->prix ?> DH</span>
-                                <del class="text-danger"><?= $p->ancien_prix ?> DH</del>
+                                <span class="fw-bold"><?= _number_format($p->prix) ?> DH</span>
+                                <del class="text-danger"><?= _number_format($p->ancien_prix) ?> DH</del>
                             </p>
 
-                            <a href="cart" class="btn bg-magenta text-white">
+                            <form method="post">
+                                <input type="hidden" name="produit_id" value="<?= $p->produit_id ?>">
+                                <input type="hidden" name="prix" value="<?= $p->prix ?>">
+                                <button name="add_to_cart" type="submit" class="btn btn-dark ">
 
-                                <i class="fa-solid fa-cart-shopping"></i>
-                                Add to cart
-                            </a>
-
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                    Add to cart
+                                </button>
+                            </form>
                         </div>
                     </div>
                     <!-- card -->
