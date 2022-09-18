@@ -8,7 +8,7 @@ $title = "Shop page";
 if (isset($_POST['add_to_cart'])) {
     $ip_server = IP_SERVER;
     $produit_id = (int)$_POST['produit_id'];
-    $prix = (float)$_POST['prix'];
+    // $prix = (float)$_POST['prix'];
 
 
     $cart_info_from_db = $pdo->query("SELECT id FROM carts WHERE ip = '$ip_server' LIMIT 1")->fetch();
@@ -24,19 +24,29 @@ if (isset($_POST['add_to_cart'])) {
         $cart_id = $cart_info_from_db->id;
 
 
-    $cart_produit = $pdo->prepare("INSERT INTO cart_produit 
-            SET
-            cart_id = :cart_id,
-            produit_id = :produit_id,
-            prix = :prix
-     ");
-    $cart_produit->execute(
-        [
-            'cart_id' => $cart_id,
-            'produit_id' => $produit_id,
-            'prix' => $prix
-        ]
-    );
+    $check_if_product_in_cart_product = $pdo->query("SELECT id FROM cart_produit WHERE cart_id = $cart_id AND produit_id = $produit_id LIMIT 1")->fetch();
+
+    // dd($check_if_product_in_cart_product);
+
+    if ($check_if_product_in_cart_product) {
+        // echo "Update";
+        $produit_id_checked = $check_if_product_in_cart_product->id;
+
+        $pdo->query("UPDATE cart_produit SET qt = qt + 1 WHERE id = $produit_id_checked");
+    } else {
+        // echo "Insert";
+        $cart_produit = $pdo->prepare("INSERT INTO cart_produit 
+        SET
+        cart_id = :cart_id,
+        produit_id = :produit_id
+        ");
+        $cart_produit->execute(
+            [
+                'cart_id' => $cart_id,
+                'produit_id' => $produit_id
+            ]
+        );
+    }
 
     $_SESSION['flash']['success'] = 'Bien ajouter';
     header('Location: cart');
@@ -168,7 +178,7 @@ ob_start(); ?>
 
                             <form method="post">
                                 <input type="hidden" name="produit_id" value="<?= $p->produit_id ?>">
-                                <input type="hidden" name="prix" value="<?= $p->prix ?>">
+
                                 <button name="add_to_cart" type="submit" class="btn btn-dark ">
 
                                     <i class="fa-solid fa-cart-shopping"></i>

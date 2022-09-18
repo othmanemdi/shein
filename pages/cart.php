@@ -4,6 +4,31 @@ ob_start();
 
 $title = "Cart page";
 
+$ip_server = IP_SERVER;
+
+$cart_produit = $pdo->query("SELECT 
+cp.id As cart_produit_id,
+cp.qt,
+p.image,
+p.nom,
+p.prix,
+p.ancien_prix
+
+FROM cart_produit cp
+
+LEFT JOIN carts c ON c.id = cp.cart_id
+LEFT JOIN produits p ON p.id = cp.produit_id
+
+WHERE c.ip = '$ip_server'
+
+ORDER BY cp.id DESC
+
+")->fetchAll();
+
+// dd($cart_produit);
+
+
+
 $content_php = ob_get_clean();
 
 ob_start(); ?>
@@ -38,70 +63,55 @@ ob_start(); ?>
                         <th>Name</th>
                         <th>Quantity</th>
                         <th>Price</th>
+                        <th>Total Price</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <img src="images/products/product_img1.jpg" width="50" alt="">
-                        </td>
-                        <td>Blue Dress</td>
 
-                        <td>
-                            <input type="number" class="form-control w-25" value="1">
-                        </td>
-                        <td>
-                            <span class="fw-bold me-2">$60.00</span>
-                            <small> <del class="text-danger">$75.00</del></small>
-                        </td>
-                        <td>
-                            <a href="" class="text-danger">
-                                <i class="far fa-trash-alt"></i>
-                            </a>
-                        </td>
-                    </tr>
+                    <?php
+                    $total_cart = 0;
+                    foreach ($cart_produit as $cp) :
+                        $prix_ttc = $cp->prix * $cp->qt;
+                    ?>
+                        <tr>
+                            <td>
+                                <img src="images/products/<?= $cp->image ?>" width="50" alt="">
+                            </td>
+                            <td>
+                                <?= $cp->nom ?>
+                            </td>
 
-                    <tr>
-                        <td>
-                            <img src="images/products/product_img11.jpg" width="50" alt="">
-                        </td>
-                        <td>Vest</td>
-                        <td>
-                            <input type="number" class="form-control w-25" value="1">
-                        </td>
-                        <td>
-                            <span class="fw-bold me-2">$55.00</span>
-                            <small> <del class="text-danger">$85.00</del></small>
-                        </td>
+                            <td>
+                                <input type="number" class="form-control w-25" value="<?= $cp->qt ?>">
+                            </td>
+                            <td>
+                                <span class="fw-bold me-2">
+                                    <?= _number_format($cp->prix) ?> DH
+                                </span>
+                                <small> <del class="text-danger">
+                                        <?= _number_format($cp->ancien_prix) ?> DH
+                                    </del></small>
+                            </td>
 
-                        <td>
-                            <a href="" class="text-danger">
-                                <i class="far fa-trash-alt"></i>
-                            </a>
-                        </td>
-                    </tr>
+                            <td>
+                                <span class="fw-bold me-2">
 
-                    <tr>
-                        <td>
-                            <img src="images/products/product_img10.jpg" width="50" alt="">
-                        </td>
-                        <td>Dress</td>
-                        <td>
-                            <input type="number" class="form-control w-25" value="1">
-                        </td>
-                        <td>
-                            <span class="fw-bold me-2">$40.00</span>
-                            <small> <del class="text-danger">$65.00</del></small>
-                        </td>
+                                    <?= _number_format($prix_ttc) ?> DH
+                                </span>
 
-                        <td>
-                            <a href="" class="text-danger">
-                                <i class="far fa-trash-alt"></i>
-                            </a>
-                        </td>
-                    </tr>
+                            </td>
+                            <td>
+                                <a href="" class="text-danger">
+                                    <i class="far fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php
 
+                        $total_cart += $prix_ttc;
+
+                    endforeach ?>
                 </tbody>
             </table>
 
@@ -132,16 +142,18 @@ ob_start(); ?>
 
                     </div>
 
-                    <span class="badge bg-dark rounded-pill">$155.00</span>
+                    <span class="badge bg-dark rounded-pill">
+                        <?= _number_format($total_cart) ?> DH
+                    </span>
 
                 </li>
 
 
-                <li class="list-group-item d-flex justify-content-between align-items-start">
+                <!-- <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
                         <div class="fw-bold">Discount:</div>
                     </div>
-                    <span class="badge bg-dark rounded-pill">20%</span>
+                    <span class="badge bg-dark rounded-pill">0%</span>
                 </li>
 
                 <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -149,14 +161,13 @@ ob_start(); ?>
                         <div class="fw-bold">Subheading:</div>
                     </div>
                     <span class="badge bg-dark rounded-pill">$129.16</span>
-                </li>
+                </li> -->
 
 
 
             </ul>
 
-            <a href="proced_checkout
-            " class="btn btn-dark mt-3 rounded-pill">
+            <a href="proced_checkout" class="btn btn-dark mt-3 rounded-pill">
                 PROCED TO CHECKOUT
             </a>
         </div>
